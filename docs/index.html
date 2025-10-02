@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acquisitions API Documentation</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui.css" />
+    <style>
+        html {
+            box-sizing: border-box;
+            overflow: -moz-scrollbars-vertical;
+            overflow-y: scroll;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+        body {
+            margin:0;
+            background: #fafafa;
+        }
+        .swagger-ui .topbar {
+            background-color: #2c3e50;
+        }
+        .swagger-ui .topbar .download-url-wrapper .download-url-button {
+            background-color: #3498db;
+        }
+        .swagger-ui .topbar .download-url-wrapper .download-url-button:hover {
+            background-color: #2980b9;
+        }
+        .swagger-ui .info .title {
+            color: #2c3e50;
+        }
+        .swagger-ui .scheme-container {
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .info {
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .info h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .info p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .info code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h3>📚 Acquisitions API Documentation</h3>
+        <p><strong>OpenAPI Specification:</strong> This documentation is generated from the OpenAPI spec in <code>openapi.yaml</code></p>
+        <p><strong>Interactive Testing:</strong> Use the "Try it out" buttons below to test the API endpoints directly</p>
+        <p><strong>Endpoints:</strong> 
+            <code>POST /v1/acquisitions</code> (GraphQL) | 
+            <code>POST /v1/llm/acquisitions</code> (Natural Language)
+        </p>
+        <p><strong>Note:</strong> Due to CORS restrictions, you'll need to serve this file from a web server to use the interactive features. For local development, you can use any simple HTTP server.</p>
+    </div>
+    
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-standalone-preset.js"></script>
+    <script>
+        window.onload = function() {
+            const spec = {
+                "openapi": "3.0.3",
+                "info": {
+                    "title": "Acquisitions API",
+                    "description": "A comprehensive serverless GraphQL API for querying acquisition data, enhanced with natural language processing capabilities using OpenAI's GPT-4o.",
+                    "version": "1.0.0"
+                },
+                "servers": [
+                    {
+                        "url": "https://fifr3his0i.execute-api.eu-west-1.amazonaws.com/prod",
+                        "description": "AWS Production Server"
+                    },
+                    {
+                        "url": "http://localhost:4000",
+                        "description": "Local Development Server"
+                    }
+                ],
+                "paths": {
+                    "/v1/acquisitions": {
+                        "post": {
+                            "summary": "GraphQL Query Endpoint",
+                            "description": "Execute GraphQL queries against the acquisitions database.",
+                            "operationId": "graphqlQuery",
+                            "tags": ["GraphQL"],
+                            "requestBody": {
+                                "required": true,
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "query": {
+                                                    "type": "string",
+                                                    "description": "GraphQL query string"
+                                                },
+                                                "variables": {
+                                                    "type": "object",
+                                                    "description": "GraphQL variables (optional)"
+                                                }
+                                            },
+                                            "required": ["query"]
+                                        },
+                                        "example": {
+                                            "query": "query { acquisitions(limit: 10) { rows { id acquisition_id price_amount acquiring_company { name } } metadata { totalCount } } }"
+                                        }
+                                    }
+                                }
+                            },
+                            "responses": {
+                                "200": {
+                                    "description": "Successful GraphQL response",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "type": "object",
+                                                        "description": "GraphQL response data"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "/v1/llm/acquisitions": {
+                        "post": {
+                            "summary": "Natural Language Query Endpoint",
+                            "description": "Convert natural language queries into GraphQL and execute them using OpenAI's GPT-4o.",
+                            "operationId": "naturalLanguageQuery",
+                            "tags": ["Natural Language Processing"],
+                            "requestBody": {
+                                "required": true,
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "prompt": {
+                                                    "type": "string",
+                                                    "description": "Natural language query about acquisitions",
+                                                    "example": "Show me the top 5 most expensive acquisitions in USD"
+                                                }
+                                            },
+                                            "required": ["prompt"]
+                                        }
+                                    }
+                                }
+                            },
+                            "responses": {
+                                "200": {
+                                    "description": "Successful natural language query response",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "llmGeneratedQuery": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "graphql": {
+                                                                "type": "string",
+                                                                "description": "Generated GraphQL query"
+                                                            },
+                                                            "variables": {
+                                                                "type": "object",
+                                                                "description": "GraphQL variables"
+                                                            }
+                                                        }
+                                                    },
+                                                    "response": {
+                                                        "type": "object",
+                                                        "description": "GraphQL execution result"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "components": {
+                    "schemas": {
+                        "Acquisition": {
+                            "type": "object",
+                            "properties": {
+                                "id": {"type": "string"},
+                                "acquisition_id": {"type": "string"},
+                                "price_amount": {"type": "number"},
+                                "price_currency_code": {"type": "string"},
+                                "acquired_at": {"type": "string", "format": "date-time"},
+                                "acquiring_company": {"$ref": "#/components/schemas/Company"},
+                                "acquired_company": {"$ref": "#/components/schemas/Company"}
+                            }
+                        },
+                        "Company": {
+                            "type": "object",
+                            "properties": {
+                                "entity_id": {"type": "string"},
+                                "name": {"type": "string"},
+                                "category_code": {"type": "string"},
+                                "status": {"type": "string"},
+                                "country_code": {"type": "string"}
+                            }
+                        }
+                    }
+                }
+            };
+
+            const ui = SwaggerUIBundle({
+                spec: spec,
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                tryItOutEnabled: true,
+                supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch']
+            });
+            
+            window.ui = ui;
+        };
+    </script>
+</body>
+</html>

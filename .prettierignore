@@ -1,0 +1,17 @@
+# Build outputs
+dist/
+cdk.out/
+
+# Dependencies
+node_modules/
+
+# Config files you don’t want formatted
+*.config.*
+tsconfig.**
+.vscode/settings.json
+cdk.json
+prettierrc.json
+README.md
+
+# Optional: ignore test snapshots
+**/__snapshots__/**

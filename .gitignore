@@ -1,0 +1,6 @@
+node_modules
+cdk.out
+outfile
+.DS_Store
+coverage/
+settings.json

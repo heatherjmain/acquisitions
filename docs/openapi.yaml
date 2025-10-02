@@ -1,0 +1,758 @@
+openapi: 3.0.3
+info:
+  title: Acquisitions API
+  description: |
+    A comprehensive serverless GraphQL API for querying acquisition data, enhanced with natural language processing capabilities using OpenAI's GPT-4o.
+    
+    ## Features
+    - **GraphQL API**: Flexible querying with filtering, sorting, and pagination
+    - **Natural Language Interface**: Convert natural language queries to GraphQL using LLM
+    - **Rich Metadata**: Comprehensive analytics including price statistics, currency distribution, and company insights
+    
+    ## Authentication
+    Currently no authentication is required. In production, this would typically use API keys or JWT tokens.
+    
+    ## Rate Limiting
+    Rate limiting is not currently implemented but should be added for production use.
+    
+  version: 1.0.0
+  contact:
+    name: Acquisitions API Support
+    email: support@acquisitions-api.com
+  license:
+    name: ISC
+    url: https://opensource.org/licenses/ISC
+
+servers:
+  - url: https://fifr3his0i.execute-api.eu-west-1.amazonaws.com/prod
+    description: AWS Production Server
+  - url: http://localhost:4000
+    description: Local Development Server
+
+paths:
+  /v1/acquisitions:
+    post:
+      summary: GraphQL Query Endpoint
+      description: |
+        Execute GraphQL queries against the acquisitions database. This endpoint accepts GraphQL queries and returns structured data about acquisitions and companies.
+        
+        ## Example Queries
+        
+        ### Get Acquisitions with Filters
+        ```graphql
+        query {
+          acquisitions(
+            limit: 10
+            currency: "USD"
+            acquired_from: "2020-01-01"
+            sort_by: price_amount
+            sort_order: DESC
+          ) {
+            rows {
+              id
+              acquisition_id
+              price_amount
+              price_currency_code
+              acquired_at
+              acquiring_company {
+                name
+                category_code
+              }
+              acquired_company {
+                name
+                category_code
+              }
+            }
+            metadata {
+              totalCount
+              minPrice
+              maxPrice
+              avgPrice
+              currencyCounts {
+                currency
+                count
+              }
+            }
+          }
+        }
+        ```
+        
+        ### Get Single Acquisition
+        ```graphql
+        query {
+          acquisition(id: "1234") {
+            id
+            acquisition_id
+            price_amount
+            price_currency_code
+            acquired_at
+            acquiring_company {
+              name
+              category_code
+            }
+            acquired_company {
+              name
+              category_code
+            }
+          }
+        }
+        ```
+      operationId: graphqlQuery
+      tags:
+        - GraphQL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: GraphQL query string
+                  example: |
+                    query {
+                      acquisitions(limit: 10) {
+                        rows {
+                          id
+                          acquisition_id
+                          price_amount
+                          acquiring_company {
+                            name
+                          }
+                        }
+                        metadata {
+                          totalCount
+                        }
+                      }
+                    }
+                variables:
+                  type: object
+                  description: GraphQL variables (optional)
+                  additionalProperties: true
+                  example:
+                    limit: 10
+                    currency: "USD"
+                operationName:
+                  type: string
+                  description: GraphQL operation name (optional)
+              required:
+                - query
+            examples:
+              basicQuery:
+                summary: Basic acquisitions query
+                value:
+                  query: |
+                    query {
+                      acquisitions(limit: 5) {
+                        rows {
+                          id
+                          acquisition_id
+                          price_amount
+                          price_currency_code
+                          acquired_at
+                        }
+                        metadata {
+                          totalCount
+                          minPrice
+                          maxPrice
+                          avgPrice
+                        }
+                      }
+                    }
+              filteredQuery:
+                summary: Filtered acquisitions query
+                value:
+                  query: |
+                    query($limit: Int, $currency: String, $sort_by: AcquisitionSortField) {
+                      acquisitions(limit: $limit, currency: $currency, sort_by: $sort_by) {
+                        rows {
+                          id
+                          acquisition_id
+                          price_amount
+                          acquiring_company {
+                            name
+                            category_code
+                          }
+                          acquired_company {
+                            name
+                            category_code
+                          }
+                        }
+                        metadata {
+                          totalCount
+                          currencyCounts {
+                            currency
+                            count
+                          }
+                        }
+                      }
+                    }
+                  variables:
+                    limit: 10
+                    currency: "USD"
+                    sort_by: "price_amount"
+      responses:
+        '200':
+          description: Successful GraphQL response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: GraphQL response data
+                    additionalProperties: true
+                    example:
+                      acquisitions:
+                        rows:
+                          - id: "1"
+                            acquisition_id: "1000"
+                            price_amount: 1000000
+                            price_currency_code: "USD"
+                            acquired_at: "2020-01-15T00:00:00Z"
+                            acquiring_company:
+                              name: "Tech Corp"
+                              category_code: "software"
+                            acquired_company:
+                              name: "Startup Inc"
+                              category_code: "mobile"
+                        metadata:
+                          totalCount: 9562
+                          minPrice: 1000
+                          maxPrice: 2600000000000
+                          avgPrice: 388619054.84
+                          currencyCounts:
+                            - currency: "USD"
+                              count: 5000
+                            - currency: "EUR"
+                              count: 2000
+                  errors:
+                    type: array
+                    description: GraphQL errors (if any)
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        locations:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              line:
+                                type: integer
+                              column:
+                                type: integer
+                        path:
+                          type: array
+                          items:
+                            type: string
+              examples:
+                success:
+                  summary: Successful query response
+                  value:
+                    data:
+                      acquisitions:
+                        rows:
+                          - id: "1"
+                            acquisition_id: "1000"
+                            price_amount: 1000000
+                            price_currency_code: "USD"
+                            acquired_at: "2020-01-15T00:00:00Z"
+                            acquiring_company:
+                              name: "Tech Corp"
+                              category_code: "software"
+                            acquired_company:
+                              name: "Startup Inc"
+                              category_code: "mobile"
+                        metadata:
+                          totalCount: 9562
+                          minPrice: 1000
+                          maxPrice: 2600000000000
+                          avgPrice: 388619054.84
+                error:
+                  summary: GraphQL error response
+                  value:
+                    errors:
+                      - message: "Cannot query field 'invalidField' on type 'Acquisition'"
+                        locations:
+                          - line: 5
+                            column: 3
+                        path:
+                          - "acquisitions"
+                          - "rows"
+                          - "invalidField"
+        '400':
+          description: Bad Request - Invalid GraphQL query
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Syntax Error: Expected Name, found String"
+              examples:
+                syntaxError:
+                  summary: GraphQL syntax error
+                  value:
+                    error: "Syntax Error: Expected Name, found String"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error"
+              examples:
+                serverError:
+                  summary: Server error
+                  value:
+                    error: "Internal server error"
+
+  /v1/llm/acquisitions:
+    post:
+      summary: Natural Language Query Endpoint
+      description: |
+        Convert natural language queries into GraphQL and execute them against the acquisitions database. This endpoint uses OpenAI's GPT-4o to understand natural language and generate appropriate GraphQL queries.
+        
+        ## Example Prompts
+        
+        - "Show me the top 5 most expensive acquisitions in USD"
+        - "Find all acquisitions from 2020 with prices over $1 million"
+        - "What companies were acquired by Google?"
+        - "Show acquisitions in the software category from last year"
+        
+        ## Response Format
+        
+        The response includes both the generated GraphQL query and the execution results, allowing you to see how the natural language was interpreted.
+      operationId: naturalLanguageQuery
+      tags:
+        - Natural Language Processing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  description: Natural language query about acquisitions
+                  example: "Show me the top 5 most expensive acquisitions in USD from 2020"
+                  minLength: 1
+                  maxLength: 1000
+              required:
+                - prompt
+            examples:
+              topAcquisitions:
+                summary: Top acquisitions query
+                value:
+                  prompt: "Show me the top 5 most expensive acquisitions in USD"
+              dateFiltered:
+                summary: Date-filtered query
+                value:
+                  prompt: "Find all acquisitions from 2020 with prices over $1 million"
+              companySpecific:
+                summary: Company-specific query
+                value:
+                  prompt: "What companies were acquired by Google?"
+              categoryFiltered:
+                summary: Category-filtered query
+                value:
+                  prompt: "Show acquisitions in the software category from last year"
+      responses:
+        '200':
+          description: Successful natural language query response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  llmGeneratedQuery:
+                    type: object
+                    properties:
+                      graphql:
+                        type: string
+                        description: Generated GraphQL query
+                        example: |
+                          query($limit: Int, $currency: String, $sort_by: AcquisitionSortField, $sort_order: SortOrder) {
+                            acquisitions(limit: $limit, currency: $currency, sort_by: $sort_by, sort_order: $sort_order) {
+                              rows {
+                                id
+                                acquisition_id
+                                price_amount
+                                acquired_at
+                                acquiring_company {
+                                  name
+                                }
+                                acquired_company {
+                                  name
+                                }
+                              }
+                              metadata {
+                                totalCount
+                              }
+                            }
+                          }
+                      variables:
+                        type: object
+                        description: GraphQL variables used in the query
+                        additionalProperties: true
+                        example:
+                          limit: 5
+                          currency: "USD"
+                          sort_by: "price_amount"
+                          sort_order: "DESC"
+                  response:
+                    type: object
+                    description: GraphQL execution result
+                    properties:
+                      data:
+                        type: object
+                        description: GraphQL response data
+                        additionalProperties: true
+                      errors:
+                        type: array
+                        description: GraphQL errors (if any)
+                        items:
+                          type: object
+              examples:
+                success:
+                  summary: Successful natural language query
+                  value:
+                    llmGeneratedQuery:
+                      graphql: |
+                        query($limit: Int, $currency: String, $sort_by: AcquisitionSortField, $sort_order: SortOrder) {
+                          acquisitions(limit: $limit, currency: $currency, sort_by: $sort_by, sort_order: $sort_order) {
+                            rows {
+                              id
+                              acquisition_id
+                              price_amount
+                              acquired_at
+                              acquiring_company {
+                                name
+                              }
+                              acquired_company {
+                                name
+                              }
+                            }
+                            metadata {
+                              totalCount
+                            }
+                          }
+                        }
+                      variables:
+                        limit: 5
+                        currency: "USD"
+                        sort_by: "price_amount"
+                        sort_order: "DESC"
+                    response:
+                      data:
+                        acquisitions:
+                          rows:
+                            - id: "1"
+                              acquisition_id: "1000"
+                              price_amount: 2600000000000
+                              acquired_at: "2020-01-15T00:00:00Z"
+                              acquiring_company:
+                                name: "Tech Giant"
+                              acquired_company:
+                                name: "Major Acquisition"
+                          metadata:
+                            totalCount: 9562
+        '400':
+          description: Bad Request - Missing or invalid prompt
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Missing prompt"
+              examples:
+                missingPrompt:
+                  summary: Missing prompt error
+                  value:
+                    error: "Missing prompt"
+                invalidPrompt:
+                  summary: Invalid prompt error
+                  value:
+                    error: "Prompt must be between 1 and 1000 characters"
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Rate limit exceeded. Please try again later."
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal server error"
+              examples:
+                llmError:
+                  summary: LLM service error
+                  value:
+                    error: "LLM service temporarily unavailable"
+                dbError:
+                  summary: Database error
+                  value:
+                    error: "Database connection failed"
+
+components:
+  schemas:
+    Acquisition:
+      type: object
+      description: Represents a business acquisition transaction
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the acquisition
+          example: "1234"
+        acquisition_id:
+          type: string
+          description: Original acquisition ID from the source data
+          example: "1000"
+        acquiring_object_id:
+          type: string
+          description: Unique ID of the acquiring company
+          example: "c:123"
+        acquired_object_id:
+          type: string
+          description: Unique ID of the acquired company
+          example: "c:456"
+        term_code:
+          type: string
+          description: Type of payment used in the acquisition
+          example: "cash"
+        price_amount:
+          type: number
+          format: float
+          description: Amount paid for the acquisition
+          example: 1000000.0
+        price_currency_code:
+          type: string
+          description: Currency code for the transaction
+          example: "USD"
+        acquired_at:
+          type: string
+          format: date-time
+          description: Date when the acquisition was completed
+          example: "2020-01-15T00:00:00Z"
+        source_url:
+          type: string
+          description: URL of the information source
+          example: "https://example.com/acquisition/1000"
+        source_description:
+          type: string
+          description: Short description of the information source
+          example: "Press release"
+        created_at:
+          type: string
+          format: date-time
+          description: When the record was created
+          example: "2020-01-15T10:30:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: When the record was last updated
+          example: "2020-01-15T10:30:00Z"
+        price:
+          type: string
+          description: Formatted price string combining amount and currency
+          example: "1000000 USD"
+        acquiring_company:
+          $ref: '#/components/schemas/Company'
+        acquired_company:
+          $ref: '#/components/schemas/Company'
+      required:
+        - id
+
+    Company:
+      type: object
+      description: Represents a company entity
+      properties:
+        entity_id:
+          type: string
+          description: Unique identifier for the company
+          example: "c:123"
+        name:
+          type: string
+          description: Name of the company
+          example: "Tech Corp"
+        category_code:
+          type: string
+          description: Business category of the company
+          example: "software"
+        status:
+          type: string
+          description: Current operational status of the company
+          example: "operating"
+        country_code:
+          type: string
+          description: Country code where the company is based
+          example: "USA"
+        created_at:
+          type: string
+          format: date-time
+          description: When the record was created
+          example: "2020-01-15T10:30:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: When the record was last updated
+          example: "2020-01-15T10:30:00Z"
+      required:
+        - entity_id
+
+    CurrencyCount:
+      type: object
+      description: Represents the count of acquisitions by currency
+      properties:
+        currency:
+          type: string
+          description: Currency code
+          example: "USD"
+        count:
+          type: integer
+          description: Number of acquisitions in this currency
+          example: 5000
+      required:
+        - currency
+        - count
+
+    AcquisitionMetadata:
+      type: object
+      description: Statistical metadata about acquisitions
+      properties:
+        totalCount:
+          type: integer
+          description: Total number of acquisitions matching the query
+          example: 9562
+        minPrice:
+          type: number
+          format: float
+          description: Minimum price among all acquisitions
+          example: 1000.0
+        maxPrice:
+          type: number
+          format: float
+          description: Maximum price among all acquisitions
+          example: 2600000000000.0
+        avgPrice:
+          type: number
+          format: float
+          description: Average price among all acquisitions
+          example: 388619054.84
+        sumPrice:
+          type: number
+          format: float
+          description: Sum of all acquisition prices
+          example: 3715975402423.0
+        earliestDate:
+          type: string
+          format: date-time
+          description: Earliest acquisition date
+          example: "2007-05-29T23:00:00Z"
+        latestDate:
+          type: string
+          format: date-time
+          description: Latest acquisition date
+          example: "2023-12-31T23:59:59Z"
+        currencyCounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CurrencyCount'
+          description: Distribution of acquisitions by currency
+        distinctAcquiringCompanies:
+          type: integer
+          description: Number of unique acquiring companies
+          example: 1500
+        distinctAcquiredCompanies:
+          type: integer
+          description: Number of unique acquired companies
+          example: 2000
+      required:
+        - totalCount
+
+    AcquisitionsResult:
+      type: object
+      description: Result set containing acquisitions and metadata
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Acquisition'
+          description: List of acquisition records
+        metadata:
+          $ref: '#/components/schemas/AcquisitionMetadata'
+      required:
+        - rows
+        - metadata
+
+    AcquisitionSortField:
+      type: string
+      enum:
+        - acquired_at
+        - price_amount
+        - acquisition_id
+      description: Available fields for sorting acquisitions
+
+    SortOrder:
+      type: string
+      enum:
+        - ASC
+        - DESC
+      description: Sort order direction
+
+    Error:
+      type: object
+      description: Error response format
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: "Invalid request"
+        code:
+          type: string
+          description: Error code (optional)
+          example: "INVALID_REQUEST"
+        details:
+          type: object
+          description: Additional error details (optional)
+          additionalProperties: true
+      required:
+        - error
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication (not currently implemented)
+
+tags:
+  - name: GraphQL
+    description: GraphQL query endpoints for structured data access
+  - name: Natural Language Processing
+    description: Natural language query endpoints using AI/ML
+
+externalDocs:
+  description: Find more information about GraphQL
+  url: https://graphql.org/learn/

@@ -1,0 +1,652 @@
+{
+	"info": {
+		"_postman_id": "655746b7-698d-49b4-9a9b-dfd17511982c",
+		"name": "Acquisitions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47757844",
+		"_collection_link": "https://heatherjmain1-7542133.postman.co/workspace/Heather's-Workspace~b1d2e27c-8bef-44c4-8a96-6ebcc1972432/collection/47757844-655746b7-698d-49b4-9a9b-dfd17511982c?action=share&source=collection_link&creator=47757844"
+	},
+	"item": [
+		{
+			"name": "example LLM prompts",
+			"item": [
+				{
+					"name": "date range query",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"prompt\": \"Show me all acquisitions that occurred in January 2001, including acquisition id, acquiring and acquired company names, price, term code, and the source URL\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/llm/acquisitions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"llm",
+								"acquisitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter by currency",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prompt\": \"List all acquisitions in £ from 2012, including acquisition ID, price, and the names of both companies.  Include all available metdata\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/llm/acquisitions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"llm",
+								"acquisitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter by term code",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prompt\": \"Get all acquisitions where the term code is cash, including the acquisition id, price, companies involved, and the date of the deal.  Include all available metdata\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/llm/acquisitions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"llm",
+								"acquisitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "paginated query",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prompt\": \"Return 50 acquisitions starting from the 101st acquisition, including company names, price, term code, and acquisition date.  Include all available metdata\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/llm/acquisitions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"llm",
+								"acquisitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sorted query",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prompt\": \"List the 20 most expensive acquisitions, including acquisition ID, price, and companies involved, sorted descending by price.  Include all available metdata\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/llm/acquisitions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"llm",
+								"acquisitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "combination of filters",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prompt\": \"List all acquisitions paid in USD with a cash term code from 2000 to 2003, including both companies’ names, prices, and acquisition dates.  Include all available metdata\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/llm/acquisitions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"llm",
+								"acquisitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query by company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prompt\": \"Show all acquisitions made by the company with ID ‘c:11’, including prices, dates, and acquired company names.  Include all available metdata\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/llm/acquisitions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"llm",
+								"acquisitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "aggregated metadat",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prompt\": \"Get metadata for all acquisitions in 1966 & 1967, including total count, min/max price, average price, sum of all prices, and earliest/latest acquisition dates.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/llm/acquisitions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"llm",
+								"acquisitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query by acquisition id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prompt\": \"Return the details of acquisition ID 1000, including both company names, price, term code, and acquisition date.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/llm/acquisitions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"llm",
+								"acquisitions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get all acquisitions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"query { acquisitions { rows { id acquisition_id acquiring_object_id acquiring_company { name } acquired_object_id acquired_company { name } price term_code acquired_at source_url source_description created_at updated_at } metadata { totalCount minPrice maxPrice avgPrice sumPrice earliestDate latestDate currencyCounts { currency count } distinctAcquiringCompanies distinctAcquiredCompanies } } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/acquisitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get acquisition by ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"query { acquisition(id: 1000) { id acquisition_id acquiring_company { name } acquired_company { name } term_code price_amount price_currency_code acquired_at source_url source_description created_at updated_at price } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/acquisitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filter acquisitions by term code and currency",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"query { acquisitions(term_code: \\\"cash\\\", currency: \\\"GBP\\\") { rows { id source_description price term_code acquired_at source_url } metadata { totalCount minPrice maxPrice avgPrice sumPrice } } }\"\n}\n\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/acquisitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filter acquisitions by date range",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"query { acquisitions(acquired_from: \\\"2001-01-01\\\", acquired_to: \\\"2001-01-31\\\") { rows { id source_description price term_code acquired_at source_url } metadata { totalCount minPrice maxPrice avgPrice sumPrice } } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/acquisitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sort acquisitions by price",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"query { acquisitions(limit: 5, sort_by: price_amount, sort_order: DESC) { rows { id acquisition_id price_amount term_code acquired_at acquiring_company { name } acquired_company { name } } metadata { totalCount minPrice maxPrice avgPrice sumPrice earliestDate latestDate } } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/acquisitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filter acquisitions by term_code",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"query { acquisitions(term_code: \\\"cash\\\", limit: 5, sort_by: acquired_at, sort_order: DESC) { rows { id acquisition_id price_amount term_code acquired_at acquiring_company { name } acquired_company { name } } metadata { totalCount minPrice maxPrice avgPrice sumPrice earliestDate latestDate } } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/acquisitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filter acquisitions by currency",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"query { acquisitions(currency: \\\"GBP\\\", limit: 5, sort_by: price_amount, sort_order: DESC) { rows { id acquisition_id price_amount term_code acquired_at acquiring_company { name } acquired_company { name } } metadata { totalCount minPrice maxPrice avgPrice sumPrice earliestDate latestDate } } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/acquisitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filter acquisitions by acquiring company id",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"query { acquisitions(acquiring_object_id: \\\"c:11\\\") { rows { id acquisition_id acquiring_object_id acquiring_company { name } acquired_object_id acquired_company { name } price term_code acquired_at source_url source_description created_at updated_at } metadata { totalCount minPrice maxPrice avgPrice sumPrice earliestDate latestDate currencyCounts { currency count } distinctAcquiringCompanies distinctAcquiredCompanies } } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/acquisitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filter acquisitions by acquired company id",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"query { acquisitions(acquired_object_id: \\\"c:10\\\") { rows { id acquisition_id acquiring_object_id acquiring_company { name } acquired_object_id acquired_company { name } price term_code acquired_at source_url source_description created_at updated_at } metadata { totalCount minPrice maxPrice avgPrice sumPrice earliestDate latestDate currencyCounts { currency count } distinctAcquiringCompanies distinctAcquiredCompanies } } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/acquisitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"acquisitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filter acquisitions by date range and sort",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"query { acquisitions(acquired_from: \\\"2001-01-01\\\", acquired_to: \\\"2002-01-31\\\" sort_by: price_amount) { rows { id acquired_at source_description price } metadata { totalCount minPrice maxPrice avgPrice sumPrice } } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/acquisitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"acquisitions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

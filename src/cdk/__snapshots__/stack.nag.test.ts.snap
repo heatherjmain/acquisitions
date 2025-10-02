@@ -1,0 +1,1499 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`CDK Nag AcquisitionStack AwsSolutions matches snapshot 1`] = `
+{
+  "Metadata": {
+    "cdk_nag": {
+      "rules_to_suppress": [
+        {
+          "id": "AwsSolutions-IAM4",
+          "reason": "The lambda role is known to be basic and based on managed policies",
+        },
+        {
+          "id": "AwsSolutions-APIG3",
+          "reason": "WAF would be added or API made private for production service",
+        },
+        {
+          "id": "AwsSolutions-VPC7",
+          "reason": "Flow logs are out of scope",
+        },
+        {
+          "id": "AwsSolutions-SMG4",
+          "reason": "Auto rotation out of scope for dummy service",
+        },
+        {
+          "id": "AwsSolutions-RDS2",
+          "reason": "Encryption out of scope for dummy service",
+        },
+        {
+          "id": "AwsSolutions-RDS6",
+          "reason": "DB auth out of scope for dummy service",
+        },
+        {
+          "id": "AwsSolutions-RDS10",
+          "reason": "Deletion protection out of scope for dummy service",
+        },
+        {
+          "id": "AwsSolutions-APIG2",
+          "reason": "Request validation out of scope for dummy service",
+        },
+        {
+          "id": "AwsSolutions-APIG1",
+          "reason": "Access logging out of scope for dummy service",
+        },
+        {
+          "id": "AwsSolutions-APIG6",
+          "reason": "Cloudwatch logging out of scope for dummy service",
+        },
+        {
+          "id": "AwsSolutions-APIG4",
+          "reason": "Auth out of scope for dummy service",
+        },
+        {
+          "id": "AwsSolutions-COG4",
+          "reason": "Auth out of scope for dummy service",
+        },
+      ],
+    },
+  },
+  "Outputs": {
+    "AcquisitionsApiGatewayEndpoint7E08A704": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "AcquisitionsApiGateway0D24298D",
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "AcquisitionsApiGatewayDeploymentStageprodCE39FA2F",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "AcquisitionsApiGateway0D24298D": {
+      "Properties": {
+        "Description": "Exposes query Lambda via API Gateway",
+        "Name": "Acquisitions Service",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "AcquisitionsApiGatewayAccount08C638A5": {
+      "DeletionPolicy": "Retain",
+      "DependsOn": [
+        "AcquisitionsApiGateway0D24298D",
+      ],
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "AcquisitionsApiGatewayCloudWatchRoleB9D8A0D9",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "AcquisitionsApiGatewayCloudWatchRoleB9D8A0D9": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "AcquisitionsApiGatewayDeployment07C5FE66b7b61d9cb6a9013798654ab0f46b3ac5": {
+      "DependsOn": [
+        "AcquisitionsApiGatewayv1acquisitionsPOSTA17406DB",
+        "AcquisitionsApiGatewayv1acquisitions4E5B72B8",
+        "AcquisitionsApiGatewayv1llmacquisitionsPOSTFF6DA7A1",
+        "AcquisitionsApiGatewayv1llmacquisitions61662F1E",
+        "AcquisitionsApiGatewayv1llm2EDAAFA0",
+        "AcquisitionsApiGatewayv1E027D70D",
+      ],
+      "Properties": {
+        "Description": "Exposes query Lambda via API Gateway",
+        "RestApiId": {
+          "Ref": "AcquisitionsApiGateway0D24298D",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "AcquisitionsApiGatewayDeploymentStageprodCE39FA2F": {
+      "DependsOn": [
+        "AcquisitionsApiGatewayAccount08C638A5",
+      ],
+      "Properties": {
+        "DeploymentId": {
+          "Ref": "AcquisitionsApiGatewayDeployment07C5FE66b7b61d9cb6a9013798654ab0f46b3ac5",
+        },
+        "RestApiId": {
+          "Ref": "AcquisitionsApiGateway0D24298D",
+        },
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "AcquisitionsApiGatewayv1E027D70D": {
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "AcquisitionsApiGateway0D24298D",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "v1",
+        "RestApiId": {
+          "Ref": "AcquisitionsApiGateway0D24298D",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "AcquisitionsApiGatewayv1acquisitions4E5B72B8": {
+      "Properties": {
+        "ParentId": {
+          "Ref": "AcquisitionsApiGatewayv1E027D70D",
+        },
+        "PathPart": "acquisitions",
+        "RestApiId": {
+          "Ref": "AcquisitionsApiGateway0D24298D",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "AcquisitionsApiGatewayv1acquisitionsPOSTA17406DB": {
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "POST",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AcquisitionsGraphqlLambdaAE6C321B",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "AcquisitionsApiGatewayv1acquisitions4E5B72B8",
+        },
+        "RestApiId": {
+          "Ref": "AcquisitionsApiGateway0D24298D",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "AcquisitionsApiGatewayv1acquisitionsPOSTApiPermissionTestnagappstackAcquisitionsApiGateway5796C789POSTv1acquisitions5A570A5B": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AcquisitionsGraphqlLambdaAE6C321B",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "AcquisitionsApiGateway0D24298D",
+              },
+              "/test-invoke-stage/POST/v1/acquisitions",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "AcquisitionsApiGatewayv1acquisitionsPOSTApiPermissionnagappstackAcquisitionsApiGateway5796C789POSTv1acquisitionsDE537901": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AcquisitionsGraphqlLambdaAE6C321B",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "AcquisitionsApiGateway0D24298D",
+              },
+              "/",
+              {
+                "Ref": "AcquisitionsApiGatewayDeploymentStageprodCE39FA2F",
+              },
+              "/POST/v1/acquisitions",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "AcquisitionsApiGatewayv1llm2EDAAFA0": {
+      "Properties": {
+        "ParentId": {
+          "Ref": "AcquisitionsApiGatewayv1E027D70D",
+        },
+        "PathPart": "llm",
+        "RestApiId": {
+          "Ref": "AcquisitionsApiGateway0D24298D",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "AcquisitionsApiGatewayv1llmacquisitions61662F1E": {
+      "Properties": {
+        "ParentId": {
+          "Ref": "AcquisitionsApiGatewayv1llm2EDAAFA0",
+        },
+        "PathPart": "acquisitions",
+        "RestApiId": {
+          "Ref": "AcquisitionsApiGateway0D24298D",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "AcquisitionsApiGatewayv1llmacquisitionsPOSTApiPermissionTestnagappstackAcquisitionsApiGateway5796C789POSTv1llmacquisitionsC30549A9": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AcquisitionsLlmLambda55818581",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "AcquisitionsApiGateway0D24298D",
+              },
+              "/test-invoke-stage/POST/v1/llm/acquisitions",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "AcquisitionsApiGatewayv1llmacquisitionsPOSTApiPermissionnagappstackAcquisitionsApiGateway5796C789POSTv1llmacquisitions47726E6A": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AcquisitionsLlmLambda55818581",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "AcquisitionsApiGateway0D24298D",
+              },
+              "/",
+              {
+                "Ref": "AcquisitionsApiGatewayDeploymentStageprodCE39FA2F",
+              },
+              "/POST/v1/llm/acquisitions",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "AcquisitionsApiGatewayv1llmacquisitionsPOSTFF6DA7A1": {
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "POST",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AcquisitionsLlmLambda55818581",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "AcquisitionsApiGatewayv1llmacquisitions61662F1E",
+        },
+        "RestApiId": {
+          "Ref": "AcquisitionsApiGateway0D24298D",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "AcquisitionsDatabaseClusterEB8F5AC2": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "CopyTagsToSnapshot": true,
+        "DBClusterParameterGroupName": "default.aurora-postgresql13",
+        "DBSubnetGroupName": {
+          "Ref": "AcquisitionsDatabaseClusterSubnetsD4DC108B",
+        },
+        "DatabaseName": "AcquisitionsDatabaseInstance",
+        "DeletionProtection": false,
+        "Engine": "aurora-postgresql",
+        "EngineVersion": "13.18",
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "nagappstackAcquisitionsDatabaseClusterSecret4E4DA66A3fdaad7efa858a3daf9490cf0a702aeb",
+              },
+              ":SecretString:password::}}",
+            ],
+          ],
+        },
+        "MasterUsername": "cred",
+        "Port": 5432,
+        "ServerlessV2ScalingConfiguration": {
+          "MaxCapacity": 1,
+          "MinCapacity": 0.5,
+        },
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "AcquisitionsDatabaseClusterSecurityGroup2A151FAA",
+              "GroupId",
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::RDS::DBCluster",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "AcquisitionsDatabaseClusterSecretAttachment075682B0": {
+      "Properties": {
+        "SecretId": {
+          "Ref": "nagappstackAcquisitionsDatabaseClusterSecret4E4DA66A3fdaad7efa858a3daf9490cf0a702aeb",
+        },
+        "TargetId": {
+          "Ref": "AcquisitionsDatabaseClusterEB8F5AC2",
+        },
+        "TargetType": "AWS::RDS::DBCluster",
+      },
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+    },
+    "AcquisitionsDatabaseClusterSecurityGroup2A151FAA": {
+      "Properties": {
+        "GroupDescription": "RDS security group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "AcquisitionsVpcECFCFD05",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "AcquisitionsDatabaseClusterSecurityGroupfromnagappstackLambdaSGBC9B1A515432D4A815C6": {
+      "Properties": {
+        "Description": "Allow Lambda to talk to RDS",
+        "FromPort": 5432,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "AcquisitionsDatabaseClusterSecurityGroup2A151FAA",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "LambdaSG9DBFCFB7",
+            "GroupId",
+          ],
+        },
+        "ToPort": 5432,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "AcquisitionsDatabaseClusterSubnetsD4DC108B": {
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnets for AcquisitionsDatabaseCluster database",
+        "SubnetIds": [
+          {
+            "Ref": "AcquisitionsVpcprivateSubnet1SubnetDD3E599B",
+          },
+          {
+            "Ref": "AcquisitionsVpcprivateSubnet2SubnetDD9D5CFA",
+          },
+        ],
+      },
+      "Type": "AWS::RDS::DBSubnetGroup",
+    },
+    "AcquisitionsDatabaseClusterwriter11E15D27": {
+      "DeletionPolicy": "Delete",
+      "DependsOn": [
+        "AcquisitionsVpcprivateSubnet1DefaultRouteF74B95BA",
+        "AcquisitionsVpcprivateSubnet1RouteTableAssociation6E9F4970",
+        "AcquisitionsVpcprivateSubnet2DefaultRoute1DFBFB0B",
+        "AcquisitionsVpcprivateSubnet2RouteTableAssociationB377A9D3",
+      ],
+      "Properties": {
+        "DBClusterIdentifier": {
+          "Ref": "AcquisitionsDatabaseClusterEB8F5AC2",
+        },
+        "DBInstanceClass": "db.serverless",
+        "Engine": "aurora-postgresql",
+        "PromotionTier": 0,
+      },
+      "Type": "AWS::RDS::DBInstance",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "AcquisitionsGraphqlLambdaAE6C321B": {
+      "DependsOn": [
+        "AcquisitionsGraphqlLambdaServiceRoleDefaultPolicyDC490A3A",
+        "AcquisitionsGraphqlLambdaServiceRoleD02E3576",
+        "AcquisitionsVpcprivateSubnet1DefaultRouteF74B95BA",
+        "AcquisitionsVpcprivateSubnet1RouteTableAssociation6E9F4970",
+        "AcquisitionsVpcprivateSubnet2DefaultRoute1DFBFB0B",
+        "AcquisitionsVpcprivateSubnet2RouteTableAssociationB377A9D3",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": "cdk-lambda-nodejs-mock-fake-bucket",
+          "S3Key": "cdk-lambda-nodejs-mock-fake-lambda.ts",
+        },
+        "Environment": {
+          "Variables": {
+            "DB_HOST": {
+              "Fn::GetAtt": [
+                "AcquisitionsDatabaseClusterEB8F5AC2",
+                "Endpoint.Address",
+              ],
+            },
+            "DB_NAME": "AcquisitionsDatabaseInstance",
+            "DB_PORT": {
+              "Fn::GetAtt": [
+                "AcquisitionsDatabaseClusterEB8F5AC2",
+                "Endpoint.Port",
+              ],
+            },
+            "DB_SECRET_ARN": {
+              "Ref": "AcquisitionsDatabaseClusterSecretAttachment075682B0",
+            },
+            "DB_USER": "cred",
+            "DEBUG_SQL": "0",
+            "OPENAI_API_KEY": "",
+            "OPENAI_MODEL": "gpt-4o",
+          },
+        },
+        "FunctionName": "AcquisitionsGraphQlLambda",
+        "Handler": "handler",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "AcquisitionsGraphqlLambdaServiceRoleD02E3576",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 30,
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "LambdaSG9DBFCFB7",
+                "GroupId",
+              ],
+            },
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "AcquisitionsVpcprivateSubnet1SubnetDD3E599B",
+            },
+            {
+              "Ref": "AcquisitionsVpcprivateSubnet2SubnetDD9D5CFA",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "AcquisitionsGraphqlLambdaServiceRoleD02E3576": {
+      "DependsOn": [
+        "AcquisitionsVpcprivateSubnet1DefaultRouteF74B95BA",
+        "AcquisitionsVpcprivateSubnet1RouteTableAssociation6E9F4970",
+        "AcquisitionsVpcprivateSubnet2DefaultRoute1DFBFB0B",
+        "AcquisitionsVpcprivateSubnet2RouteTableAssociationB377A9D3",
+      ],
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "AcquisitionsGraphqlLambdaServiceRoleDefaultPolicyDC490A3A": {
+      "DependsOn": [
+        "AcquisitionsVpcprivateSubnet1DefaultRouteF74B95BA",
+        "AcquisitionsVpcprivateSubnet1RouteTableAssociation6E9F4970",
+        "AcquisitionsVpcprivateSubnet2DefaultRoute1DFBFB0B",
+        "AcquisitionsVpcprivateSubnet2RouteTableAssociationB377A9D3",
+      ],
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "secretsmanager:GetSecretValue",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "AcquisitionsDatabaseClusterSecretAttachment075682B0",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "AcquisitionsGraphqlLambdaServiceRoleDefaultPolicyDC490A3A",
+        "Roles": [
+          {
+            "Ref": "AcquisitionsGraphqlLambdaServiceRoleD02E3576",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "AcquisitionsLlmLambda55818581": {
+      "DependsOn": [
+        "AcquisitionsLlmLambdaServiceRoleDefaultPolicyA58797B5",
+        "AcquisitionsLlmLambdaServiceRole9AF8E100",
+        "AcquisitionsVpcprivateSubnet1DefaultRouteF74B95BA",
+        "AcquisitionsVpcprivateSubnet1RouteTableAssociation6E9F4970",
+        "AcquisitionsVpcprivateSubnet2DefaultRoute1DFBFB0B",
+        "AcquisitionsVpcprivateSubnet2RouteTableAssociationB377A9D3",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": "cdk-lambda-nodejs-mock-fake-bucket",
+          "S3Key": "cdk-lambda-nodejs-mock-fake-lambda.ts",
+        },
+        "Environment": {
+          "Variables": {
+            "DB_HOST": {
+              "Fn::GetAtt": [
+                "AcquisitionsDatabaseClusterEB8F5AC2",
+                "Endpoint.Address",
+              ],
+            },
+            "DB_NAME": "AcquisitionsDatabaseInstance",
+            "DB_PORT": {
+              "Fn::GetAtt": [
+                "AcquisitionsDatabaseClusterEB8F5AC2",
+                "Endpoint.Port",
+              ],
+            },
+            "DB_SECRET_ARN": {
+              "Ref": "AcquisitionsDatabaseClusterSecretAttachment075682B0",
+            },
+            "DB_USER": "cred",
+            "DEBUG_SQL": "0",
+            "OPENAI_API_KEY": "",
+            "OPENAI_MODEL": "gpt-4o",
+          },
+        },
+        "FunctionName": "AcquisitionsLlmLambda",
+        "Handler": "handler",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "AcquisitionsLlmLambdaServiceRole9AF8E100",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 30,
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "LambdaSG9DBFCFB7",
+                "GroupId",
+              ],
+            },
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "AcquisitionsVpcprivateSubnet1SubnetDD3E599B",
+            },
+            {
+              "Ref": "AcquisitionsVpcprivateSubnet2SubnetDD9D5CFA",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "AcquisitionsLlmLambdaServiceRole9AF8E100": {
+      "DependsOn": [
+        "AcquisitionsVpcprivateSubnet1DefaultRouteF74B95BA",
+        "AcquisitionsVpcprivateSubnet1RouteTableAssociation6E9F4970",
+        "AcquisitionsVpcprivateSubnet2DefaultRoute1DFBFB0B",
+        "AcquisitionsVpcprivateSubnet2RouteTableAssociationB377A9D3",
+      ],
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "AcquisitionsLlmLambdaServiceRoleDefaultPolicyA58797B5": {
+      "DependsOn": [
+        "AcquisitionsVpcprivateSubnet1DefaultRouteF74B95BA",
+        "AcquisitionsVpcprivateSubnet1RouteTableAssociation6E9F4970",
+        "AcquisitionsVpcprivateSubnet2DefaultRoute1DFBFB0B",
+        "AcquisitionsVpcprivateSubnet2RouteTableAssociationB377A9D3",
+      ],
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "secretsmanager:GetSecretValue",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "AcquisitionsDatabaseClusterSecretAttachment075682B0",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "AcquisitionsLlmLambdaServiceRoleDefaultPolicyA58797B5",
+        "Roles": [
+          {
+            "Ref": "AcquisitionsLlmLambdaServiceRole9AF8E100",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "AcquisitionsVpcECFCFD05": {
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "AcquisitionsVpcIGWB839723C": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::InternetGateway",
+    },
+    "AcquisitionsVpcVPCGW59B98F48": {
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "AcquisitionsVpcIGWB839723C",
+        },
+        "VpcId": {
+          "Ref": "AcquisitionsVpcECFCFD05",
+        },
+      },
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+    },
+    "AcquisitionsVpcprivateSubnet1DefaultRouteF74B95BA": {
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "AcquisitionsVpcpublicSubnet1NATGateway0E6939AA",
+        },
+        "RouteTableId": {
+          "Ref": "AcquisitionsVpcprivateSubnet1RouteTableB745E4B8",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "AcquisitionsVpcprivateSubnet1RouteTableAssociation6E9F4970": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "AcquisitionsVpcprivateSubnet1RouteTableB745E4B8",
+        },
+        "SubnetId": {
+          "Ref": "AcquisitionsVpcprivateSubnet1SubnetDD3E599B",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "AcquisitionsVpcprivateSubnet1RouteTableB745E4B8": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/privateSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "AcquisitionsVpcECFCFD05",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "AcquisitionsVpcprivateSubnet1SubnetDD3E599B": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.0.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "private",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/privateSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "AcquisitionsVpcECFCFD05",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "AcquisitionsVpcprivateSubnet2DefaultRoute1DFBFB0B": {
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "AcquisitionsVpcpublicSubnet2NATGateway7E3DFC5A",
+        },
+        "RouteTableId": {
+          "Ref": "AcquisitionsVpcprivateSubnet2RouteTable2AD2B7C2",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "AcquisitionsVpcprivateSubnet2RouteTable2AD2B7C2": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/privateSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "AcquisitionsVpcECFCFD05",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "AcquisitionsVpcprivateSubnet2RouteTableAssociationB377A9D3": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "AcquisitionsVpcprivateSubnet2RouteTable2AD2B7C2",
+        },
+        "SubnetId": {
+          "Ref": "AcquisitionsVpcprivateSubnet2SubnetDD9D5CFA",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "AcquisitionsVpcprivateSubnet2SubnetDD9D5CFA": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.1.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "private",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/privateSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "AcquisitionsVpcECFCFD05",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "AcquisitionsVpcpublicSubnet1DefaultRoute4CAD9442": {
+      "DependsOn": [
+        "AcquisitionsVpcVPCGW59B98F48",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "AcquisitionsVpcIGWB839723C",
+        },
+        "RouteTableId": {
+          "Ref": "AcquisitionsVpcpublicSubnet1RouteTableD3C20A00",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "AcquisitionsVpcpublicSubnet1EIPB0C01A16": {
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/publicSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "AcquisitionsVpcpublicSubnet1NATGateway0E6939AA": {
+      "DependsOn": [
+        "AcquisitionsVpcpublicSubnet1DefaultRoute4CAD9442",
+        "AcquisitionsVpcpublicSubnet1RouteTableAssociation22EAD46B",
+      ],
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "AcquisitionsVpcpublicSubnet1EIPB0C01A16",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": {
+          "Ref": "AcquisitionsVpcpublicSubnet1Subnet6C8841A3",
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/publicSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "AcquisitionsVpcpublicSubnet1RouteTableAssociation22EAD46B": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "AcquisitionsVpcpublicSubnet1RouteTableD3C20A00",
+        },
+        "SubnetId": {
+          "Ref": "AcquisitionsVpcpublicSubnet1Subnet6C8841A3",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "AcquisitionsVpcpublicSubnet1RouteTableD3C20A00": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/publicSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "AcquisitionsVpcECFCFD05",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "AcquisitionsVpcpublicSubnet1Subnet6C8841A3": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.2.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "public",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/publicSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "AcquisitionsVpcECFCFD05",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "AcquisitionsVpcpublicSubnet2DefaultRouteD7D52C4E": {
+      "DependsOn": [
+        "AcquisitionsVpcVPCGW59B98F48",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "AcquisitionsVpcIGWB839723C",
+        },
+        "RouteTableId": {
+          "Ref": "AcquisitionsVpcpublicSubnet2RouteTable6C18436F",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "AcquisitionsVpcpublicSubnet2EIP9F7A0A6B": {
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/publicSubnet2",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "AcquisitionsVpcpublicSubnet2NATGateway7E3DFC5A": {
+      "DependsOn": [
+        "AcquisitionsVpcpublicSubnet2DefaultRouteD7D52C4E",
+        "AcquisitionsVpcpublicSubnet2RouteTableAssociationE5E6B8EE",
+      ],
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "AcquisitionsVpcpublicSubnet2EIP9F7A0A6B",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": {
+          "Ref": "AcquisitionsVpcpublicSubnet2Subnet0AAB1354",
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/publicSubnet2",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "AcquisitionsVpcpublicSubnet2RouteTable6C18436F": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/publicSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "AcquisitionsVpcECFCFD05",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "AcquisitionsVpcpublicSubnet2RouteTableAssociationE5E6B8EE": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "AcquisitionsVpcpublicSubnet2RouteTable6C18436F",
+        },
+        "SubnetId": {
+          "Ref": "AcquisitionsVpcpublicSubnet2Subnet0AAB1354",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "AcquisitionsVpcpublicSubnet2Subnet0AAB1354": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.3.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "public",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "nag-app-stack/AcquisitionsVpc/publicSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "AcquisitionsVpcECFCFD05",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "LambdaSG9DBFCFB7": {
+      "Properties": {
+        "GroupDescription": "nag-app-stack/LambdaSG",
+        "GroupName": "AcquisitionsSecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "AcquisitionsVpcECFCFD05",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "SeedDbFunctionC89DF8EA": {
+      "DependsOn": [
+        "AcquisitionsVpcprivateSubnet1DefaultRouteF74B95BA",
+        "AcquisitionsVpcprivateSubnet1RouteTableAssociation6E9F4970",
+        "AcquisitionsVpcprivateSubnet2DefaultRoute1DFBFB0B",
+        "AcquisitionsVpcprivateSubnet2RouteTableAssociationB377A9D3",
+        "SeedDbFunctionServiceRoleDefaultPolicyE96405F8",
+        "SeedDbFunctionServiceRole5CE6F8AB",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": "cdk-lambda-nodejs-mock-fake-bucket",
+          "S3Key": "cdk-lambda-nodejs-mock-fake-lambda.ts",
+        },
+        "Environment": {
+          "Variables": {
+            "DB_HOST": {
+              "Fn::GetAtt": [
+                "AcquisitionsDatabaseClusterEB8F5AC2",
+                "Endpoint.Address",
+              ],
+            },
+            "DB_NAME": "AcquisitionsDatabaseInstance",
+            "DB_PORT": {
+              "Fn::GetAtt": [
+                "AcquisitionsDatabaseClusterEB8F5AC2",
+                "Endpoint.Port",
+              ],
+            },
+            "DB_SECRET_ARN": {
+              "Ref": "AcquisitionsDatabaseClusterSecretAttachment075682B0",
+            },
+            "DB_USER": "cred",
+            "DEBUG_SQL": "0",
+            "OPENAI_API_KEY": "",
+            "OPENAI_MODEL": "gpt-4o",
+          },
+        },
+        "FunctionName": "SeedDBLambda",
+        "Handler": "handler",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "SeedDbFunctionServiceRole5CE6F8AB",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs22.x",
+        "Timeout": 900,
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "LambdaSG9DBFCFB7",
+                "GroupId",
+              ],
+            },
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "AcquisitionsVpcprivateSubnet1SubnetDD3E599B",
+            },
+            {
+              "Ref": "AcquisitionsVpcprivateSubnet2SubnetDD9D5CFA",
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "SeedDbFunctionServiceRole5CE6F8AB": {
+      "DependsOn": [
+        "AcquisitionsVpcprivateSubnet1DefaultRouteF74B95BA",
+        "AcquisitionsVpcprivateSubnet1RouteTableAssociation6E9F4970",
+        "AcquisitionsVpcprivateSubnet2DefaultRoute1DFBFB0B",
+        "AcquisitionsVpcprivateSubnet2RouteTableAssociationB377A9D3",
+      ],
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "SeedDbFunctionServiceRoleDefaultPolicyE96405F8": {
+      "DependsOn": [
+        "AcquisitionsVpcprivateSubnet1DefaultRouteF74B95BA",
+        "AcquisitionsVpcprivateSubnet1RouteTableAssociation6E9F4970",
+        "AcquisitionsVpcprivateSubnet2DefaultRoute1DFBFB0B",
+        "AcquisitionsVpcprivateSubnet2RouteTableAssociationB377A9D3",
+      ],
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "secretsmanager:GetSecretValue",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "AcquisitionsDatabaseClusterSecretAttachment075682B0",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "SeedDbFunctionServiceRoleDefaultPolicyE96405F8",
+        "Roles": [
+          {
+            "Ref": "SeedDbFunctionServiceRole5CE6F8AB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "nagappstackAcquisitionsDatabaseClusterSecret4E4DA66A3fdaad7efa858a3daf9490cf0a702aeb": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Generated by the CDK for stack: ",
+              {
+                "Ref": "AWS::StackName",
+              },
+            ],
+          ],
+        },
+        "GenerateSecretString": {
+          "ExcludeCharacters": " %+~\`#$&*()|[]{}:;<>?!'/@"\\",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{"username":"cred"}",
+        },
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
