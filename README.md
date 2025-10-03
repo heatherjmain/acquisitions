@@ -264,7 +264,7 @@ src/
 
 ### 3. **Natural Language Interface**
 - **Choice**: OpenAI GPT-4o integration
-- **Rationale**: Required by spec, plus makes data easier to access and lowers learning curve
+- **Rationale**: LLM requested in spec, plus makes data easier to access and lowers learning curve
 - **Trade-offs**: API costs vs. smoother user experience
 
 ### 4. **Database Design**
@@ -283,7 +283,6 @@ src/
 - [ ] **Add API key to secret manager**: Currently stored as env var for ease, but secret key should be stored in AWS Secrets Manager, or encrypted in AWS Parameter Store
 - [ ] **API Rate Limiting**: Implement rate limiting for LLM endpoints
 - [ ] **Caching Layer**: Add Redis caching for frequent queries
-- [ ] **Input Validation**: Enhanced GraphQL input validation
 - [ ] **Error Handling**: Custom error handling should be implemented throughout the application
 - [ ] **Monitoring**: CloudWatch dashboards and alerting
 - [ ] **Logging**: Currently just using console log, should switch to a comprehensive logging solutions (AWS powertools perhaps)
@@ -291,16 +290,12 @@ src/
 
 ### Medium Term (3-6 months)
 - [ ] **Authentication**: JWT-based authentication and authorization
-- [ ] **Multi-tenancy**: Support for multiple organizations
 - [ ] **Data Export**: CSV/Excel export functionality
-- [ ] **Real-time Updates**: WebSocket subscriptions for live data
 - [ ] **Advanced Analytics**: Time-series analysis and trends
 
 ### Long Term (6+ months)
 - [ ] **Machine Learning**: Predictive analytics for acquisition trends
-- [ ] **Data Pipeline**: ETL pipeline for real-time data ingestion
 - [ ] **Multi-region**: Global deployment with data replication
-- [ ] **Mobile App**: React Native mobile application
 - [ ] **Advanced LLM**: Fine-tuned models for domain-specific queries
 
 ## 🔧 Configuration
@@ -346,7 +341,6 @@ DEBUG_SQL=1  # Enable SQL query analysis
 - **VPC**: Lambdas deployed in private subnets
 - **Secrets Manager**: Database credentials stored securely
 - **IAM Roles**: Least privilege access policies
-- **Input Validation**: GraphQL schema validation
 
 ### Security Improvements Needed
 - [ ] **API Authentication**: JWT or API key authentication - Cognito?
@@ -354,6 +348,7 @@ DEBUG_SQL=1  # Enable SQL query analysis
 - [ ] **Input Sanitization**: Enhanced input validation
 - [ ] **Audit Logging**: Comprehensive audit trail
 - [ ] **Encryption**: Data encryption at rest and in transit
+- [ ] **Secrets Manager**: API key to be stored securely
 
 ## 📈 Monitoring & Observability
 
@@ -383,7 +378,6 @@ DEBUG_SQL=1  # Enable SQL query analysis
 - **ESLint**: Enforced code style
 - **Prettier**: Automated code formatting
 - **Testing**: Minimum 90% test coverage
-- **Documentation**: Comprehensive JSDoc comments
 
 ## 🙏 Acknowledgments
 - **Cursor** – Assisted with documentation, small code refactors and debugging.  
